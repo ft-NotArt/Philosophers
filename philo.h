@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:10:37 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/08 23:36:55 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/01/09 07:40:51 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,18 @@ typedef struct s_args
 	int	nb_time_must_eat ;
 }	t_args ;
 
+typedef enum table_state
+{
+	ENJOY_YOUR_MEAL,
+	WONT_THINK_NO_MORE,
+	THEY_ATE_SO_MUCH,
+	PTHREAD_FAIL
+}	t_state ;
+
 typedef struct s_table
 {
-	pthread_mutex_t mutex_dead ;
-	bool			dead_philo ;
-	pthread_mutex_t mutex_fullfilled ;
+	pthread_mutex_t mutex_update ;
+	t_state			state ;
 	int				nb_fullfilled_philos ;
 }	t_table ;
 
@@ -49,7 +56,14 @@ typedef struct s_philo
 
 int		parsing(int argc, char *argv[]);
 void	error_args(void);
+void	error_pthread(t_table *table)
 t_args	*init_args(int argc, char *argv[]);
+t_table	*init_table();
+t_philo	*init_philo(t_args *args, t_table *table, int id,
+	pthread_mutex_t *left_fork);
+void	free_table(t_table *table);
+void	free_philo(t_philo *philo);
+void	free_philos(t_philo **philosophers, int nb_philos);
 int		ft_isdigit(int c);
 long	ft_atol(const char *nptr);
 

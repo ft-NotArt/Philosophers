@@ -21,6 +21,7 @@ FILES			=	philo							\
 					math							\
 					error							\
 					init							\
+					free							\
 \
 
 SRC				=	$(addsuffix .c, $(FILES))

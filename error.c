@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:54:31 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/09 00:09:22 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/01/09 07:40:40 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,12 @@ void	error_args(void)
 	\n\t(uint) time_to_sleep (strictly positive)\
 	\n\t(uint) [number_of_times_each_philosopher_must_eat] (strictly positive)\
 	\n", 265);
+}
+
+void	error_pthread(t_table *table)
+{
+	write(STDERR_FILENO, "Pthread create failed\n", 23);
+	pthread_mutex_lock(&table->mutex_update);
+	table->state = PTHREAD_FAIL ;
+	pthread_mutex_unlock(&table->mutex_update);
 }
