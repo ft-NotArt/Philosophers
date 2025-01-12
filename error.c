@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:54:31 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/09 07:40:40 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/01/12 01:17:57 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	error_args(void)
 
 void	error_pthread(t_table *table)
 {
-	write(STDERR_FILENO, "Pthread create failed\n", 23);
+	write(STDERR_FILENO, "Pthread create/join failed\n", 28);
 	pthread_mutex_lock(&table->mutex_update);
 	table->state = PTHREAD_FAIL ;
 	pthread_mutex_unlock(&table->mutex_update);

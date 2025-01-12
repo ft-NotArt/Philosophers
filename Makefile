@@ -17,6 +17,8 @@ CFLAGS			=	-Wall -Werror -Wextra -g -I.
 
 FILES			=	philo							\
 \
+					meal							\
+					actions							\
 					pars							\
 					math							\
 					error							\
@@ -36,6 +38,12 @@ $(NAME)			:	$(OBJ)
 					echo -e '$(LIGHT_PURPLE) \tCompiled$(DARK_PURPLE) $@'
 #					pactl set-sink-mute 0 false
 #					pactl set-sink-volume 0 +50%
+
+debug			:	CFLAGS += -fsanitize=thread
+debug			:	re
+
+leak			:	CFLAGS += -fsanitize=address
+leak			:	re
 
 clean			:
 					$(RM) $(OBJ)

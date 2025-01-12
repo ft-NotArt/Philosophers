@@ -6,78 +6,56 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:05:31 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/09 07:44:52 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/01/12 09:30:33 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*philosophing(void *arg)
+static void	serving_plates(t_args *args, t_table *table,
+	t_philo **philos, pthread_t *threads)
 {
-	t_philo	*philo ;
+	int	i ;
 
-	philo = (t_philo *) arg ;
-
-	printf("Philo : id=%d\n", philo->id);
-
-	return (NULL);
+	i = -1 ;
+	while (++i < args->nb_philo)
+		if (pthread_create(threads + i, NULL, philosophing, philos[i]) != 0)
+			return (error_pthread(table));
+	if (pthread_create(threads + i++, NULL, monitoring, philos) != 0)
+		error_pthread(table);
 }
 
-// TODO: On failure, think to free table and args,
-// -DONE-(as well as every other previous philo)
-t_philo	**create_philos(t_args *args, t_table *table)
+static void	waiting_till_they_finish(t_args *args, t_table *table,
+	pthread_t *threads)
 {
-	t_philo	**philos ;
-	int 	i ;
+	int	i ;
 
-	philos = malloc(sizeof(t_philo *) * args->nb_philo);
-	philos[0] = init_philo(args, table, 1, NULL);
-	if (!philos[0])
-		return (free_philos(philos, 1), NULL);
-	i = 0 ;
-	while (++i <= args->nb_philo)
-	{
-		philos[i] = init_philo(args, table, i + 1,
-			&philos[i - 1]->right_fork);
-		if (!philos[i])
-			return (free_philos(philos, i + 1), NULL);
-	}
-	philos[0]->left_fork = &philos[i - 1]->right_fork ;
-	return (philos);
+	i = args->nb_philo + 1;
+	while (--i >= 0)
+		if (pthread_join(threads[i], NULL) != 0)
+			return (error_pthread(table));
 }
 
-void	bon_appetit(t_args *args, t_table *table)
+static void	bon_appetit(t_args *args, t_table *table)
 {
 	t_philo		**philos ;
 	pthread_t	*threads ;
-	int	i ;
 
 	philos = create_philos(args, table);
 	if (!philos)
+		return (free(args), free_table(table));
+	threads = malloc(sizeof(pthread_t) * (args->nb_philo + 1));
+	pthread_mutex_lock(&table->mutex_update);
+	serving_plates(args, table, philos, threads);
+	if (table->state != PTHREAD_FAIL)
 	{
-		free(args);
-		free_table(table);
-		return ;
+		pthread_mutex_unlock(&table->mutex_update);
+		waiting_till_they_finish(args, table, threads);
 	}
-	threads = malloc(sizeof(pthread_t) * args->nb_philo);
-	i = -1 ;
-	while (++i < args->nb_philo)
-	{
-		if (pthread_create(threads + i, NULL, philosophing, philos[i]) != 0)
-		{
-			error_pthread(table);
-			break ;
-		}
-	}
-	while (--i >= 0)
-	{
-		if (pthread_join(threads[i], NULL) != 0)
-		{
-			error_pthread(table);
-			break ;
-		}
-	}
+	else
+		pthread_mutex_unlock(&table->mutex_update);
 	free(threads);
+	free_philos(philos, args->nb_philo);
 }
 
 int	main(int argc, char *argv[])
@@ -88,31 +66,13 @@ int	main(int argc, char *argv[])
 	if (argc < 5 || argc > 6 || !parsing(argc, argv))
 		return (error_args(), EXIT_FAILURE);
 	args = init_args(argc, argv);
-
 	table = init_table();
 	if (!table)
 		return (EXIT_FAILURE);
-	
-	printf("faut penser la \n");
-
-	pthread_t thread1 ;
-	t_philo	*philo1 ;
-
-	philo1 = init_philo(args, table, 1, NULL);
-
-	pthread_create(&thread1, NULL, philosophing, philo1);
-
-	pthread_t thread2 ;
-	t_philo	*philo2 ;
-
-	philo2 = init_philo(args, table, 2, &philo1->right_fork);
-	philo1->left_fork = &philo2->right_fork ;
-
-	pthread_create(&thread2, NULL, philosophing, philo2);
-
-	pthread_join(thread1, NULL);
-	pthread_join(thread2, NULL);
-
+	bon_appetit(args, table);
 	free(args);
-	return (EXIT_SUCCESS);	
+	if (table->state == PTHREAD_FAIL)
+		return (free_table(table), EXIT_FAILURE);
+	free_table(table);
+	return (EXIT_SUCCESS);
 }

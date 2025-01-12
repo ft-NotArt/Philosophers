@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 21:11:18 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/09 07:33:31 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/01/12 09:18:13 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,15 @@ t_table	*init_table(void)
 		write(STDERR_FILENO, "Mutex init failed\n", 19);
 		return (NULL);
 	}
+	if (pthread_mutex_init(&table->mutex_display, NULL) != 0)
+	{
+		free(table);
+		write(STDERR_FILENO, "Mutex init failed\n", 19);
+		return (NULL);
+	}
 	table->state = ENJOY_YOUR_MEAL ;
 	table->nb_fullfilled_philos = 0 ;
+	table->lunch_start = get_time_in_ms();
 	return (table);
 }
 
@@ -61,5 +68,27 @@ t_philo	*init_philo(t_args *args, t_table *table, int id,
 	}
 	philo->left_fork = left_fork ;
 	philo->nb_time_ate = 0 ;
+	philo->last_meal = get_time_in_ms();
 	return (philo);
+}
+
+t_philo	**create_philos(t_args *args, t_table *table)
+{
+	t_philo	**philos ;
+	int		i ;
+
+	philos = malloc(sizeof(t_philo *) * args->nb_philo);
+	philos[0] = init_philo(args, table, 1, NULL);
+	if (!philos[0])
+		return (free_philos(philos, 1), NULL);
+	i = 0 ;
+	while (++i < args->nb_philo)
+	{
+		philos[i] = init_philo(args, table, i + 1, &philos[i - 1]->right_fork);
+		if (!philos[i])
+			return (free_philos(philos, i + 1), NULL);
+	}
+	if (args->nb_philo > 1)
+		philos[0]->left_fork = &philos[i - 1]->right_fork ;
+	return (philos);
 }
