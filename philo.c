@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:05:31 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/12 09:30:33 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/01/13 03:59:48 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	bon_appetit(t_args *args, t_table *table)
 
 	philos = create_philos(args, table);
 	if (!philos)
-		return (free(args), free_table(table));
+		return ;
 	threads = malloc(sizeof(pthread_t) * (args->nb_philo + 1));
 	pthread_mutex_lock(&table->mutex_update);
 	serving_plates(args, table, philos, threads);
@@ -68,7 +68,7 @@ int	main(int argc, char *argv[])
 	args = init_args(argc, argv);
 	table = init_table();
 	if (!table)
-		return (EXIT_FAILURE);
+		return (free(args), EXIT_FAILURE);
 	bon_appetit(args, table);
 	free(args);
 	if (table->state == PTHREAD_FAIL)
