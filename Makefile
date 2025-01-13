@@ -36,8 +36,8 @@ all				:	$(NAME)
 $(NAME)			:	$(OBJ)
 					$(CC) $(CFLAGS) $^ -o $@
 					echo -e '$(LIGHT_RED) \tCompiled$(DARK_RED) $@'
-#					pactl set-sink-mute 0 false
-#					pactl set-sink-volume 0 +50%
+					pactl set-sink-mute 0 false
+					pactl set-sink-volume 0 +25%
 
 debug			:	CFLAGS += -fsanitize=thread
 debug			:	re

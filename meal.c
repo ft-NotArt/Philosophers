@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 07:50:38 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/12 09:23:17 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/01/13 02:39:11 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	check_dead(t_philo *philo, t_table *table, t_args *args)
 	if ((get_time_in_ms() - philo->last_meal) > args->time_to_die)
 	{
 		pthread_mutex_lock(&philo->table->mutex_display);
-		printf("%10ld %3d died \n", get_time_launch(table), philo->id);
+		printf("%10ld %3d died \a\n", get_time_launch(table), philo->id);
 		pthread_mutex_unlock(&philo->table->mutex_display);
 		table->state = WONT_THINK_NO_MORE ;
 	}
