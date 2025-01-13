@@ -1,8 +1,8 @@
 # COLORS
 
-PURPLE			=	\x1b[0m\x1b[38;2;153;37;190m
-LIGHT_PURPLE	=	\x1b[0m\x1b[38;2;184;102;210m
-DARK_PURPLE		=	\x1b[1m\x1b[38;2;107;26;133m
+RED			=	\x1b[0m\x1b[38;2;255;0;0m
+LIGHT_RED	=	\x1b[0m\x1b[38;2;255;102;102m
+DARK_RED		=	\x1b[1m\x1b[38;2;153;0;0m
 
 # TARGET
 
@@ -35,7 +35,7 @@ all				:	$(NAME)
 
 $(NAME)			:	$(OBJ)
 					$(CC) $(CFLAGS) $^ -o $@
-					echo -e '$(LIGHT_PURPLE) \tCompiled$(DARK_PURPLE) $@'
+					echo -e '$(LIGHT_RED) \tCompiled$(DARK_RED) $@'
 #					pactl set-sink-mute 0 false
 #					pactl set-sink-volume 0 +50%
 
@@ -47,11 +47,11 @@ leak			:	re
 
 clean			:
 					$(RM) $(OBJ)
-					echo -e '$(LIGHT_PURPLE) \tCleaned$(PURPLE) $(OBJ)'
+					echo -e '$(LIGHT_RED) \tCleaned$(RED) $(OBJ)'
 
 fclean			:	clean
 					$(RM) $(NAME)
-					echo -e '$(LIGHT_PURPLE) \tCleaned$(DARK_PURPLE) $(NAME)'
+					echo -e '$(LIGHT_RED) \tCleaned$(DARK_RED) $(NAME)'
 
 re				:	fclean all
 
