@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 01:05:04 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/12 09:18:26 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:57:26 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	free_table(t_table *table)
 {
 	pthread_mutex_destroy(&table->mutex_update);
 	pthread_mutex_destroy(&table->mutex_display);
+	free(table->fullfilled_philos);
 	free(table);
 }
 

@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:05:31 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/13 03:59:48 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:26:38 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	main(int argc, char *argv[])
 	if (argc < 5 || argc > 6 || !parsing(argc, argv))
 		return (error_args(), EXIT_FAILURE);
 	args = init_args(argc, argv);
-	table = init_table();
+	table = init_table(args);
 	if (!table)
 		return (free(args), EXIT_FAILURE);
 	bon_appetit(args, table);

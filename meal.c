@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 07:50:38 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/13 02:39:11 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:02:31 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,26 @@ void	*philosophing(void *param)
 	return (NULL);
 }
 
-static void	check_fullfilled(t_philo *philo, t_table *table, t_args *args)
+static void	check_fullfilled(t_philo **philos, int philo_index,
+	t_table *table, t_args *args)
 {
+	int	i ;
+
+	if (args->nb_time_must_eat == -1)
+		return ;
 	pthread_mutex_lock(&table->mutex_update);
-	if (philo->nb_time_ate >= args->nb_time_must_eat)
-		table->nb_fullfilled_philos++ ;
-	if (args->nb_time_must_eat >= 0
-		&& table->nb_fullfilled_philos >= args->nb_philo)
-		table->state = THEY_ATE_SO_MUCH ;
+	if (philos[philo_index]->nb_time_ate >= args->nb_time_must_eat)
+		table->fullfilled_philos[philo_index] = true ;
+	i = -1 ;
+	while (++i < args->nb_philo)
+	{
+		if (table->fullfilled_philos[i] == false)
+		{
+			pthread_mutex_unlock(&table->mutex_update);
+			return ;
+		}
+	}
+	table->state = THEY_ATE_SO_MUCH ;
 	pthread_mutex_unlock(&table->mutex_update);
 }
 
@@ -76,7 +88,7 @@ void	*monitoring(void *param)
 		i = -1 ;
 		while (++i < args->nb_philo && meal_shall_continue(table))
 		{
-			check_fullfilled(philos[i], table, args);
+			check_fullfilled(philos, i, table, args);
 			check_dead(philos[i], table, args);
 		}
 	}

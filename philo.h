@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:10:37 by anoteris          #+#    #+#             */
-/*   Updated: 2025/01/12 09:17:51 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:04:31 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <string.h>
 # include <stdbool.h>
 # include <limits.h>
 
@@ -43,7 +44,7 @@ typedef struct s_table
 	pthread_mutex_t	mutex_update ;
 	pthread_mutex_t	mutex_display ;
 	t_state			state ;
-	int				nb_fullfilled_philos ;
+	bool			*fullfilled_philos ;
 	long			lunch_start ;
 }	t_table;
 
@@ -64,7 +65,7 @@ int		parsing(int argc, char *argv[]);
 void	error_args(void);
 void	error_pthread(t_table *table);
 t_args	*init_args(int argc, char *argv[]);
-t_table	*init_table(void);
+t_table	*init_table(t_args *args);
 t_philo	*init_philo(t_args *args, t_table *table, int id,
 			pthread_mutex_t *left_fork);
 t_philo	**create_philos(t_args *args, t_table *table);
