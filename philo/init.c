@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 21:11:18 by anoteris          #+#    #+#             */
-/*   Updated: 2025/03/12 17:05:11 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:31:43 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ t_table	*init_table(t_args *args)
 		return (NULL);
 	}
 	table->state = ENJOY_YOUR_MEAL ;
-	table->fullfilled_philos = malloc(args->nb_philo * sizeof(bool));
-	memset(table->fullfilled_philos, 0, args->nb_philo * sizeof(bool));
+	table->fulfilled_philos = malloc(args->nb_philo * sizeof(bool));
+	memset(table->fulfilled_philos, 0, args->nb_philo * sizeof(bool));
 	table->lunch_start = get_time_in_ms();
 	return (table);
 }

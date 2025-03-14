@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:05:31 by anoteris          #+#    #+#             */
-/*   Updated: 2025/03/12 16:26:38 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:39:17 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	serving_plates(t_args *args, t_table *table,
 		error_pthread(table);
 }
 
-static void	waiting_till_they_finish(t_args *args, t_table *table,
+static void	waiting_til_they_finish(t_args *args, t_table *table,
 	pthread_t *threads)
 {
 	int	i ;
@@ -50,7 +50,7 @@ static void	bon_appetit(t_args *args, t_table *table)
 	if (table->state != PTHREAD_FAIL)
 	{
 		pthread_mutex_unlock(&table->mutex_update);
-		waiting_till_they_finish(args, table, threads);
+		waiting_til_they_finish(args, table, threads);
 	}
 	else
 		pthread_mutex_unlock(&table->mutex_update);

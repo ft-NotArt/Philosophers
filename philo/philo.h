@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:10:37 by anoteris          #+#    #+#             */
-/*   Updated: 2025/03/12 17:04:31 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:31:43 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_table
 	pthread_mutex_t	mutex_update ;
 	pthread_mutex_t	mutex_display ;
 	t_state			state ;
-	bool			*fullfilled_philos ;
+	bool			*fulfilled_philos ;
 	long			lunch_start ;
 }	t_table;
 
