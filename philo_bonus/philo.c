@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:05:31 by anoteris          #+#    #+#             */
-/*   Updated: 2025/03/13 20:13:06 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/15 02:51:00 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ int	main(int argc, char *argv[])
 	status = bon_appetit(args, table);
 	free(args);
 	free_table(table);
+	(sem_unlink(SEM_FORK), sem_unlink(SEM_DISPLAY), sem_unlink(SEM_DEATH));
 	return (status);
 }
