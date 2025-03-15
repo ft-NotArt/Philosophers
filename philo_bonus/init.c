@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 21:11:18 by anoteris          #+#    #+#             */
-/*   Updated: 2025/03/13 01:56:00 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/15 03:26:50 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ t_table	*init_table(t_args *args)
 	t_table	*table ;
 
 	table = malloc(sizeof(t_table));
-	(sem_unlink(SEM_FORK), sem_unlink(SEM_DISPLAY), sem_unlink(SEM_DEATH));
+	(sem_unlink(SEM_FORK), sem_unlink(SEM_DEATH));
+	(sem_unlink(SEM_DISPLAY), sem_unlink(SEM_UPDATE));
 	table->forks = sem_open(SEM_FORK, O_CREAT, O_RDWR, args->nb_philo);
 	table->death = sem_open(SEM_DEATH, O_CREAT, O_RDWR, 1);
 	table->display = sem_open(SEM_DISPLAY, O_CREAT, O_RDWR, 1);
+	table->update = sem_open(SEM_UPDATE, O_CREAT, O_RDWR, 1);
 	if (table->forks == SEM_FAILED
 		|| table->death == SEM_FAILED
-		|| table->display == SEM_FAILED)
+		|| table->display == SEM_FAILED
+		|| table->update == SEM_FAILED)
 	{
-		free(table);
-		sem_close(table->forks);
-		sem_close(table->death);
-		sem_close(table->display);
+		free_table(table);
 		write(2, "sem_open failed\n", 17);
 		return (NULL);
 	}

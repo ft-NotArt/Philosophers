@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:10:37 by anoteris          #+#    #+#             */
-/*   Updated: 2025/03/13 19:46:45 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/15 03:26:36 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,31 +31,33 @@
 # define SEM_FORK		"philo_forks"
 # define SEM_DEATH		"philo_death"
 # define SEM_DISPLAY	"philo_display"
+# define SEM_UPDATE		"philo_update"
 
 typedef struct s_args
 {
-	int	nb_philo ;
-	int	time_to_die ;
-	int	time_to_eat ;
-	int	time_to_sleep ;
-	int	nb_time_must_eat ;
+	int	nb_philo;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	nb_time_must_eat;
 }	t_args;
 
 typedef struct s_table
 {
-	sem_t			*forks ;
-	sem_t			*death ;
-	sem_t			*display ;
-	long			lunch_start ;
+	sem_t			*forks;
+	sem_t			*death; // serves as a shared between processes boolean
+	sem_t			*display;
+	sem_t			*update;
+	long			lunch_start;
 }	t_table;
 
 typedef struct s_philo
 {
-	t_args			*args ;
-	t_table			*table ;
-	int				id ;
-	int				nb_time_ate ;
-	long			last_meal ;
+	t_args			*args;
+	t_table			*table;
+	int				id;
+	int				nb_time_ate;
+	long			last_meal;
 }	t_philo;
 
 void	philosophing(t_philo **philos, int index, t_table *table, t_args *args);

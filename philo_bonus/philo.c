@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:05:31 by anoteris          #+#    #+#             */
-/*   Updated: 2025/03/15 02:51:00 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/15 04:31:34 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ static bool	serving_plates(t_args *args, t_table *table,
 		if (pids[i] < 0)
 		{
 			error_fork(table);
-			if (table->death->__align != 0)
-				sem_wait(table->death);
+			sem_wait(table->update);
+			table->death->__align = 0 ;
+			sem_post(table->update);
 			return (EXIT_FAILURE);
 		}
 		if (pids[i] == 0)
@@ -81,6 +82,5 @@ int	main(int argc, char *argv[])
 	status = bon_appetit(args, table);
 	free(args);
 	free_table(table);
-	(sem_unlink(SEM_FORK), sem_unlink(SEM_DISPLAY), sem_unlink(SEM_DEATH));
 	return (status);
 }

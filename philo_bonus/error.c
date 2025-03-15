@@ -6,7 +6,7 @@
 /*   By: anoteris <noterisarthur42@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:54:31 by anoteris          #+#    #+#             */
-/*   Updated: 2025/03/13 20:12:57 by anoteris         ###   ########.fr       */
+/*   Updated: 2025/03/15 03:14:40 by anoteris         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ void	error_fork(t_table *table)
 void	error_pthread(t_table *table)
 {
 	write(STDERR_FILENO, "Pthread create/join failed\n", 28);
-	sem_wait(table->death);
+	sem_wait(table->update);
+	table->death->__align = 0 ;
+	sem_post(table->update);
 }
