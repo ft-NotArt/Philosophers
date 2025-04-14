@@ -6,7 +6,7 @@ DARK_RED		=	\x1b[1m\x1b[38;2;153;0;0m
 
 # TARGET
 
-NAME			=	philo
+NAME			=	philo_bonus
 
 # FLAGS
 
