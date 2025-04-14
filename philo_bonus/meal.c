@@ -24,7 +24,7 @@ static bool	check_fulfilled(t_philo *philo, t_table *table, t_args *args)
 
 static bool	check_dead(t_philo *philo, t_table *table, t_args *args)
 {
-	bool res ;
+	bool	res ;
 
 	sem_wait(table->update);
 	res = get_time_since(philo->last_meal) > args->time_to_die ;
@@ -40,7 +40,7 @@ static bool	meal_shall_continue(t_philo *philo, t_table *table, t_args *args)
 	res = table->death->__align != 0 ;
 	sem_post(table->update);
 	res = res && !check_dead(philo, table, args)
-			&& !check_fulfilled(philo, table, args);
+		&& !check_fulfilled(philo, table, args);
 	return (res);
 }
 
@@ -64,7 +64,7 @@ static void	*mini_monitoring(void *param)
 		}
 		sem_wait(table->update);
 		if (table->death->__align == 0)
-			return(sem_post(table->update), NULL);
+			return (sem_post(table->update), NULL);
 		sem_post(table->update);
 		if (check_fulfilled(philo, table, args))
 			return (NULL);
